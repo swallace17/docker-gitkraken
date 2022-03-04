@@ -15,9 +15,13 @@ RUN apt-get update -y && \
     apt-get install -y --no-install-recommends lxterminal nano wget openssh-client rsync ca-certificates xdg-utils htop tar xzip gzip bzip2 zip unzip && \
     rm -rf /var/lib/apt/lists
 
-RUN wget https://release.gitkraken.com/linux/gitkraken-amd64.deb && \
-    dpkg -i gitkraken-amd64.deb && \
-    rm gitkraken-amd64.deb
+#Additional dependencies for gitkraken
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends libnotify4 libxtst6 libnss3 libglib2.0-bin trash-cli gvfs-bin kde-cli-tools kde-runtime &&\
+    rm -rf /var/lib/apt/lists
+
+RUN wget https://release.gitkraken.com/linux/gitkraken-amd64.deb &&\
+    dpkg -i gitkraken-amd64.deb
 
 COPY --from=easy-novnc-build /bin/easy-novnc /usr/local/bin/
 COPY menu.xml /etc/xdg/openbox/
